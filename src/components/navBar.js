@@ -4,9 +4,10 @@ import NavBarItem from './navBarItem';
 export default class Navbar extends React.Component {
   render() {
     return(
-      <div className="navbar navbar-expand-lg fixed-top navbar-dark bg-primary">
+      <div className="navbar navbar-expand-lg fixed-top navbar-dark bg-dark"
+          style={{fontSize: 20}}>
         <div className="container">
-          <a href="https://bootswatch.com/" className="navbar-brand">Minhas Finanças</a>
+          <a href="#/home" className="navbar-brand" style={{fontSize: 25}}>Finanças Pessoais</a>
           <button 
             className="navbar-toggler" 
             type="button" 
@@ -21,8 +22,8 @@ export default class Navbar extends React.Component {
   
           <div className="collapse navbar-collapse" id="navbarResponsive">
             <ul className="navbar-nav">
-              <NavBarItem href="#/" title="Home"/>
-              <NavBarItem href="#/" title="Lançamentos"/>
+              <NavBarItem href="#/home" title="Home"/>
+              <NavBarItem href="#/posting-list" title="Relatórios"/>
               <NavBarItem href="#/signin" title="Sign In"/>
             </ul>
           </div>

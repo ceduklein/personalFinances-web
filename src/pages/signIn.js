@@ -1,19 +1,36 @@
 import React from 'react';
 import { withRouter } from 'react-router-dom';
+import UserService from '../services/userService';
+import AuthService from '../services/authService';
 
 import Card from '../components/card';
 import FormGroup from '../components/formGroup';
+import { alertError } from '../components/toastr';
 
-export default withRouter( class SignIn extends React.Component {
+class SignIn extends React.Component {
 
   state = {
     email: '',
     password: ''
   }
 
-  login = () => {
-    console.log('email: ', this.state.email);
-    console.log('password: ', this.state.password);
+  constructor() {
+    super();
+    this.userService = new UserService();
+    this.authService = new AuthService();
+  }
+
+  login = async () => {
+
+    this.userService.authenticate({
+      email: this.state.email,
+      pass: this.state.password
+    }).then(response => {
+      this.authService.signIn(response.data);
+      this.props.history.push('/home');
+    }).catch(error => {
+      alertError(error.response.data);
+    });
   }
 
   goToSignUp = () => {
@@ -70,4 +87,5 @@ export default withRouter( class SignIn extends React.Component {
 
     )
   }
-})
+}
+export default withRouter(SignIn);

@@ -1,20 +1,50 @@
-import React, {useState} from 'react';
+import React from 'react';
 import { withRouter } from 'react-router-dom'
+
+import UsuarioService from '../services/userService';
 
 import Card from '../components/card';
 import FormGroup from '../components/formGroup';
+import { alertError, alertSuccess } from '../components/toastr';
+
 
 export default withRouter(class CadastroUsuario extends React.Component {
 
-state = {
-    name: "",
-    email: "",
-    password: "",
-    passwordConfirmation: "",
+  state = {
+      name: "",
+      email: "",
+      pass: "",
+      passConfirmation: "",
+  }
+
+  constructor() {
+    super();
+    this.userService = new UsuarioService();
   }
 
   register = () => {
-    console.log(this.state)
+    const user = {
+      name: this.state.name,
+      email: this.state.email,
+      pass: this.state.pass,
+      passConfirmation: this.state.passConfirmation,
+    }
+
+    try {
+      this.userService.validate(user);
+    }catch(error) {
+      const errors = error.msgs;
+      errors.forEach( msg => { alertError(msg) } );
+      return false;
+    }
+
+    this.userService.save(user)
+      .then(response => {
+        alertSuccess('Usuário cadastrado com sucesso. Efetue o login para acessar a aplicação.')
+        this.props.history.push('/signin');
+      }).catch(error => {
+        alertError(error.response.data);
+      });
   }
 
   backToLogin = () => {
@@ -28,7 +58,7 @@ state = {
           <div className="col-lg-12">
             <div className="bs-component">
               <fieldset>
-                <FormGroup htmlFor="inputName" label="Nome: *">
+                <FormGroup htmlFor="inputName" label="Nome:">
                   <input
                     type="text"
                     id="inputName"
@@ -39,7 +69,7 @@ state = {
                   />
                 </FormGroup>
 
-                <FormGroup htmlFor="inputEmail" label="Email: *">
+                <FormGroup htmlFor="inputEmail" label="Email:">
                   <input
                     type="email"
                     id="inputEmail"
@@ -51,22 +81,22 @@ state = {
                   />
                 </FormGroup>
 
-                <FormGroup htmlFor="inputPass1" label="Senha: *">
+                <FormGroup htmlFor="inputPass1" label="Senha:">
                   <input
                     type="password"
                     id="inputPass1"
-                    name="password"
-                    onChange={e => this.setState({password : e.target.value})}
+                    name="pass"
+                    onChange={e => this.setState({pass : e.target.value})}
                     className="form-control"
                   />
                 </FormGroup>
 
-                <FormGroup htmlFor="inputPass2" label="Repita a senha: *">
+                <FormGroup htmlFor="inputPass2" label="Confirme a senha:">
                   <input
                     type="password"
                     id="inputPass2"
-                    name="passwordConfirmation"
-                    onChange={e => this.setState({passwordConfirmation : e.target.value})}
+                    name="passConfirmation"
+                    onChange={e => this.setState({passConfirmation : e.target.value})}
                     className="form-control"
                   />
                 </FormGroup>
