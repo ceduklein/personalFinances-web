@@ -1,11 +1,16 @@
 import React from 'react';
 
-export default class NavBarItem extends React.Component {
-  render() {
+export default function NavBarItem({render, ...props}) {
+
+  if(render) {
     return(
       <li className="nav-item">
-        <a className="nav-link" href={this.props.href}>{this.props.title}</a>
+        <a className="nav-link" onClick={props.onClick} href={props.href}>{props.title}</a>
       </li>
     )
+  } else {
+    return false;
   }
+
+
 }

@@ -2,22 +2,26 @@ export const storageKey = '@MyFinances:user';
 
 export default class AuthService {
   
-  signIn(user) {
+  static signIn(user) {
     localStorage.setItem(storageKey, JSON.stringify(user));
   }
 
-  signOut() {
+  static signOut() {
     localStorage.removeItem(storageKey);
   }
 
-  getUser() {
+  static getUser() {
     const user = localStorage.getItem(storageKey);
     return JSON.parse(user);
   }
 
-  isAuthenticated() {
+  static isAuthenticated() {
     const loggedUser = JSON.parse(localStorage.getItem(storageKey));
-    return loggedUser && loggedUser.id;
+    if(loggedUser) {
+      return true
+    } else {
+      return false;
+    }
   }
 
 

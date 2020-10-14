@@ -1,7 +1,8 @@
 import React from 'react';
 import { withRouter } from 'react-router-dom';
 import UserService from '../services/userService';
-import AuthService from '../services/authService';
+
+import { AuthContext } from '../main.js/AuthProvider'
 
 import Card from '../components/card';
 import FormGroup from '../components/formGroup';
@@ -17,7 +18,13 @@ class SignIn extends React.Component {
   constructor() {
     super();
     this.userService = new UserService();
-    this.authService = new AuthService();
+  }
+
+  componentDidMount() {
+    const user = this.context.isAuthenticated;
+    if(user) {
+      this.props.history.push('/home');
+    }
   }
 
   login = async () => {
@@ -26,7 +33,7 @@ class SignIn extends React.Component {
       email: this.state.email,
       pass: this.state.password
     }).then(response => {
-      this.authService.signIn(response.data);
+      this.context.signIn(response.data);
       this.props.history.push('/home');
     }).catch(error => {
       alertError(error.response.data);
@@ -88,4 +95,7 @@ class SignIn extends React.Component {
     )
   }
 }
+
+SignIn.contextType = AuthContext;
+
 export default withRouter(SignIn);

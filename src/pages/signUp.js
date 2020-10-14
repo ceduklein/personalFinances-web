@@ -104,11 +104,16 @@ export default withRouter(class CadastroUsuario extends React.Component {
                 <button 
                   onClick={this.register} 
                   type="button" 
-                  className="btn btn-success">Salvar</button>
+                  className="btn btn-success">
+                    Salvar
+                </button>
+
                 <button
                   onClick={this.backToLogin}
                   type="button" 
-                  className="btn btn-danger">Voltar</button>
+                  className="btn btn-danger">
+                    Cancelar
+                </button>
 
 
               </fieldset>

@@ -9,6 +9,22 @@ export default class PostingService {
     return api.post(`${apiUrl}`, posting);
   }
 
+  delete(postingId) {
+    return api.delete(`${apiUrl}/${postingId}`);
+  }
+
+  update(posting) {
+    return api.put(`${apiUrl}/${posting.id}`, posting);
+  }
+
+  updateStatus(postingId, status) {
+    return api.put(`${apiUrl}/${postingId}/status`, {status});
+  }
+
+  getPostingById(postingId) {
+    return api.get(`${apiUrl}/${postingId}`);
+  }
+
   search(filter) {
     let params = `?user=${filter.user}`;
 
@@ -31,7 +47,7 @@ export default class PostingService {
     if(filter.description) {
       params = `${params}&description=${filter.description}`
     }
-
+    
     return api.get(`${apiUrl}${params}`);
   }
 

@@ -2,12 +2,13 @@ import React from 'react';
 import { withRouter } from 'react-router-dom';
 
 import PostingService from '../services/postingService';
-import AuthService from '../services/authService';
+import { AuthContext } from '../main.js/AuthProvider';
 
 import Card from '../components/card';
 import FormGroup from '../components/formGroup';
 import SelectMenu from '../components/selectMenu';
 import { alertError, alertSuccess } from '../components/toastr';
+
 
 
 class Posting extends React.Component {
@@ -21,16 +22,32 @@ class Posting extends React.Component {
     year: '',
     month: '',
     user: null,
+    updating: false,
   }
 
   constructor() {
     super();
     this.postingService = new PostingService();
-    this.authService = new AuthService();
   }
 
+  /** Verifica se existe id como parâmetro e, em caso positivo, busca o lançamento pelo id
+   na api e preenche os campos do formulário */
+  componentDidMount() {
+    const params = this.props.match.params;
+    if(params.id) {
+      this.postingService.getPostingById(params.id)
+        .then(response => {
+          this.setState({...response.data, updating: true});
+        }).catch(error => {
+          alertError(error.response.data);
+        })
+    }
+  }
+
+
+  // Salva um novo lançamento.
   save = () => {
-    const loggedUser = this.authService.getUser();
+    const loggedUser = this.context.authenticatedUser;
     const { description, value, type, year, month } = this.state;
     const posting = { user: loggedUser.id, description, value, type, year, month };
 
@@ -51,13 +68,28 @@ class Posting extends React.Component {
         alertError(error.response.data);
       })
   }
+
+
+  // Atualiza o lançamento.
+  update = () => {
+    const { description, year, month, type, value, id, user, status } = this.state;
+    const posting = { description, year, month, type, value, id, user, status };
+
+    this.postingService.update(posting)
+      .then(response => {
+        this.props.history.push('/posting-list');
+        alertSuccess('Lançamento atualizado com sucesso.')
+      }).catch(error => {
+        alertError(error.response.data);
+      })
+  }
   
   render() {
     const typeList = this.postingService.getTypeList();
     const monthList = this.postingService.getMonthList();
 
     return(
-      <Card title="Cadastro de Lançamentos">
+      <Card title={this.state.updating ? 'Atualização de Lançamento' : 'Cadastro de Lançamento'}>
         <div className="row">
           <div className="col-md-12">
             <FormGroup htmlFor="inputDesc" label="Descrição: *">
@@ -127,18 +159,21 @@ class Posting extends React.Component {
 
         <div className="row">
           <div className="col-md-6">
-            <button type="button" onClick={this.save} className="btn btn-success">
-              <i className="pi pi-save"></i> Salvar
-            </button>
-
-            <button type="button" onClick={() => {}} className="btn btn-success">
-              <i className="pi pi-save"></i> Salvar Alterações
-            </button>
+            { this.state.updating ? ( 
+                <button type="button" onClick={this.update} className="btn btn-success">
+                  Salvar Alterações
+                </button>
+              ) : (
+                <button type="button" onClick={this.save} className="btn btn-success">
+                  Salvar
+                </button>              
+              )
+            }
 
             <button type="button" 
-                    onClick={e => this.props.history.push('/home')} 
+                    onClick={e => this.props.history.push('/posting-list')} 
                     className="btn btn-danger">
-              <i className="pi pi-times"></i> Cancelar
+                      Cancelar
             </button>
           </div>
         </div>
@@ -146,4 +181,6 @@ class Posting extends React.Component {
     )
   }
 }
+Posting.contextType = AuthContext;
+
 export default withRouter(Posting);

@@ -1,8 +1,14 @@
 import React from 'react';
+import { FiLogOut } from 'react-icons/fi'
+
 import NavBarItem from './navBarItem';
 
-export default class Navbar extends React.Component {
+import { AuthContext } from '../main.js/AuthProvider';
+
+class Navbar extends React.Component {
+
   render() {
+
     return(
       <div className="navbar navbar-expand-lg fixed-top navbar-dark bg-dark"
           style={{fontSize: 20}}>
@@ -22,14 +28,22 @@ export default class Navbar extends React.Component {
   
           <div className="collapse navbar-collapse" id="navbarResponsive">
             <ul className="navbar-nav">
-              <NavBarItem href="#/home" title="Home"/>
-              <NavBarItem href="#/posting-list" title="Relatórios"/>
-              <NavBarItem href="#/signin" title="Sign In"/>
+              <NavBarItem render={this.context.isAuthenticated} href="#/home" title="Home"/>
+              <NavBarItem render={this.context.isAuthenticated} href="#/posting-list" title="Relatórios"/>
+              <NavBarItem render={this.context.isAuthenticated}
+                          onClick={this.context.signOut} 
+                          title={<span>Sair <FiLogOut size={18} /></span>}
+                          href="#/signin" />
             </ul>
           </div>
   
         </div>
+
       </div>
     )
   }
 }
+
+Navbar.contextType = AuthContext;
+
+export default Navbar;
