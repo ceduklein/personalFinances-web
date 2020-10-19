@@ -7,8 +7,7 @@ import Card from '../components/card';
 import FormGroup from '../components/formGroup';
 import { alertError, alertSuccess } from '../components/toastr';
 
-
-export default withRouter(class CadastroUsuario extends React.Component {
+class SignUp extends React.Component {
 
   state = {
       name: "",
@@ -68,7 +67,6 @@ export default withRouter(class CadastroUsuario extends React.Component {
                     placeholder="Digite o nome"
                   />
                 </FormGroup>
-
                 <FormGroup htmlFor="inputEmail" label="Email:">
                   <input
                     type="email"
@@ -80,7 +78,6 @@ export default withRouter(class CadastroUsuario extends React.Component {
                     placeholder="Digite o email"
                   />
                 </FormGroup>
-
                 <FormGroup htmlFor="inputPass1" label="Senha:">
                   <input
                     type="password"
@@ -90,7 +87,6 @@ export default withRouter(class CadastroUsuario extends React.Component {
                     className="form-control"
                   />
                 </FormGroup>
-
                 <FormGroup htmlFor="inputPass2" label="Confirme a senha:">
                   <input
                     type="password"
@@ -100,22 +96,18 @@ export default withRouter(class CadastroUsuario extends React.Component {
                     className="form-control"
                   />
                 </FormGroup>
-
                 <button 
                   onClick={this.register} 
                   type="button" 
                   className="btn btn-success">
                     Salvar
                 </button>
-
                 <button
                   onClick={this.backToLogin}
                   type="button" 
                   className="btn btn-danger">
                     Cancelar
                 </button>
-
-
               </fieldset>
             </div>
           </div>
@@ -123,4 +115,5 @@ export default withRouter(class CadastroUsuario extends React.Component {
       </Card>
     )
   }
-})
+}
+export default withRouter(SignUp)

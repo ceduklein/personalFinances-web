@@ -11,10 +11,8 @@ import { AuthContext } from '../main.js/AuthProvider';
 import Card from '../components/card';
 import FormGroup from '../components/formGroup';
 import SelectMenu from '../components/selectMenu';
-import PostingList from '../components/postingList';
 import { alertError, alertSuccess, alertWarning } from '../components/toastr';
-
-
+import TableSort from '../components/tableSort';
 
 class PostingSearch extends React.Component {
 
@@ -36,37 +34,24 @@ class PostingSearch extends React.Component {
 
   /* Lista todos os lançamentos do usuário, dentro do mês e ano atual,
   assim que o componente é renderizado.*/
-  componentDidMount() {
+  async componentDidMount() {
     const date = new Date();
     const loggedUser = this.context.authenticatedUser;
-    if(!loggedUser) {
-      alertWarning('Efetue o login para acessar seus registros financeiros');
-      this.props.history.push('/signin');
-    }
-    this.postingService.search(
-      {
+    
+    const response = await this.postingService.search({
         user: loggedUser.id,
         month: date.getMonth() + 1,
         year: date.getFullYear()
-      })
-      .then(response => {
-        const postingsResponse = response.data;
-        if(postingsResponse < 1) {
-          alertWarning('Nenum registro encontrado.')
-        }
-
-        this.setState({postings: postingsResponse})
-      })
+    });
+    if(response.data < 1) {
+      alertWarning('Nenum registro encontrado.');
+    }
+    this.setState({postings: response.data});
   }
 
-
   // Busca os lançamentos do usuário, com base nos filtros informados.
-  search = () => {
+  search = async() => {
     const loggedUser = this.context.authenticatedUser;
-    if(!loggedUser) {
-      alertWarning('Efetue seu login para acessar seus registros financeiros');
-      this.props.history.push('/signin');
-    }
 
     const filter = {
       year: this.state.year,
@@ -77,17 +62,12 @@ class PostingSearch extends React.Component {
       user: loggedUser.id,
     }
 
-    this.postingService.search(filter)
-      .then(response => {
-        const postingsResponse = response.data;
-        if(postingsResponse < 1) {
-          alertWarning('Nenum registro encontrado.')
-        }
-
-        this.setState({postings: postingsResponse})
-      })
+    const response = await this.postingService.search(filter);
+    if(response.data < 1) {
+      alertWarning('Nenum registro encontrado.');
+    }
+    this.setState({postings: response.data});
   }
-
 
   openDeleteDialog = (posting) => {
     this.setState({showDeleteDialog: true, postingToDelete: posting});
@@ -96,7 +76,6 @@ class PostingSearch extends React.Component {
   closeDeleteDialog = () => {
     this.setState({showDeleteDialog: false});
   }
-
 
   // Chama a api, deleta o lançamento e atualiza o estado do array de lançamentos.
   delete = () => {
@@ -112,7 +91,6 @@ class PostingSearch extends React.Component {
         alertError('Erro ao tentar deletar o lançamento.');
       })
   }
-
 
   // Chama a api e altera o status do lançamento.
   updateStatus = (posting, status) => {
@@ -132,7 +110,6 @@ class PostingSearch extends React.Component {
       });
   }
 
-
   // Redireciona o usuário para a página de edição do lançamento.
   edit = (postingId) => {
     this.props.history.push(`/posting/${postingId}`);
@@ -150,8 +127,8 @@ class PostingSearch extends React.Component {
       </div>
     );
 
-
     return(
+      <div className="jumbotron" style={{padding: '10px', marginTop: '-30px'}}>
       <Card title="Relatório de Lançamentos">
 
         {/* Formulário de Pesquisa */}
@@ -165,7 +142,6 @@ class PostingSearch extends React.Component {
                     onChange={e => this.setState({year: e.target.value})} />
             </FormGroup>
           </div>
-
           <div className="col-md-4">
             <FormGroup htmlFor="inputMonth" label="Mês:">
               <SelectMenu list={monthList}
@@ -175,7 +151,6 @@ class PostingSearch extends React.Component {
                           onChange={e => this.setState({month: e.target.value})}/>
             </FormGroup>
           </div>
-
           <div className="col-md-4">
             <FormGroup htmlFor="inputType" label="Tipo:">
               <SelectMenu list={typeList}
@@ -186,7 +161,6 @@ class PostingSearch extends React.Component {
             </FormGroup>
           </div>
         </div>
-
         <div className="row">
           <div className="col-md-6">
           <FormGroup htmlFor="inputDesc" label="Descrição:">
@@ -208,17 +182,18 @@ class PostingSearch extends React.Component {
             </FormGroup>
           </div>
         </div>
-
         <div className="row">
           <div className="col-md-6">
             <button type="button"
                     onClick={this.search} 
-                    className="btn btn-success">
+                    className="btn btn-success"
+                    style={{marginBottom: '-5px'}}>
                     <FcSearch size={22}/> Buscar
             </button>
             <button type="button"
-                    className="btn btn-primary"
-                    onClick={e => this.props.history.push('/posting')}>
+                    className="btn btn-info"
+                    onClick={e => this.props.history.push('/posting')}
+                    style={{marginBottom: '-5px'}}>
                     <FcMoneyTransfer size={22}/> Novo Lançamento
             </button>
           </div>
@@ -229,10 +204,10 @@ class PostingSearch extends React.Component {
         <div className="row">
           <div className="col-md-12">
             <div className="bs-component">
-              <PostingList postings={this.state.postings}
-                          onClickDelete={this.openDeleteDialog} 
-                          onClickEdit={this.edit} 
-                          onClickUpdateStatus={this.updateStatus} />
+              <TableSort data={this.state.postings}
+                  onClickDelete={this.openDeleteDialog} 
+                  onClickEdit={this.edit} 
+                  onClickUpdateStatus={this.updateStatus}/>
             </div>
           </div>
         </div>
@@ -253,6 +228,7 @@ class PostingSearch extends React.Component {
         </div>
 
       </Card>
+      </div>
     )
   }
 

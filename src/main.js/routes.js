@@ -1,7 +1,7 @@
 import React from 'react';
 import { Route, Switch, HashRouter, Redirect } from 'react-router-dom';
 
-import Home from '../pages/home';
+import Dashboard from '../pages/dashboard';
 import SignIn from '../pages/signIn';
 import SignUp from '../pages/signUp';
 import PostingSearch from '../pages/postingSearch';
@@ -35,8 +35,8 @@ class Routes extends React.Component {
           <Route path="/signup" component={SignUp} />
 
           <AuthRoute isAuthenticated={this.context.isAuthenticated}
-                     path="/home" 
-                     component={Home} />
+                     path="/dashboard" 
+                     component={Dashboard} />
           <AuthRoute isAuthenticated={this.context.isAuthenticated} 
                      path="/posting-list"
                      component={PostingSearch} />

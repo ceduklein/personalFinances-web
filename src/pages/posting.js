@@ -9,8 +9,6 @@ import FormGroup from '../components/formGroup';
 import SelectMenu from '../components/selectMenu';
 import { alertError, alertSuccess } from '../components/toastr';
 
-
-
 class Posting extends React.Component {
 
   state = {
@@ -44,7 +42,6 @@ class Posting extends React.Component {
     }
   }
 
-
   // Salva um novo lançamento.
   save = () => {
     const loggedUser = this.context.authenticatedUser;
@@ -68,7 +65,6 @@ class Posting extends React.Component {
         alertError(error.response.data);
       })
   }
-
 
   // Atualiza o lançamento.
   update = () => {
@@ -101,7 +97,6 @@ class Posting extends React.Component {
             </FormGroup>
           </div>
         </div>
-
         <div className="row">
           <div className="col-md-4">
             <FormGroup htmlFor="inputValue" label="Valor: *">
@@ -112,7 +107,6 @@ class Posting extends React.Component {
                     onChange={e => this.setState({value: e.target.value})} />
             </FormGroup>
           </div>
-
           <div className="col-md-4">
             <FormGroup htmlFor="inputYear" label="Ano: *">
               <input type="text"
@@ -122,7 +116,6 @@ class Posting extends React.Component {
                     onChange={e => this.setState({year: e.target.value})} />
             </FormGroup>
           </div>
-
           <div className="col-md-4">
             <FormGroup htmlFor="inputMonth" label="Mês: *">
               <SelectMenu id="inputMonth"
@@ -133,7 +126,6 @@ class Posting extends React.Component {
             </FormGroup>
           </div>
         </div>
-
         <div className="row">
           <div className="col-md-4">
           <FormGroup htmlFor="inputType" label="Tipo: *">
@@ -144,7 +136,6 @@ class Posting extends React.Component {
                         onChange={e => this.setState({type: e.target.value})} />
             </FormGroup>
           </div>
-
           <div className="col-md-4">
           <FormGroup htmlFor="inputStatus" label="Situação: ">
               <input type="text"

@@ -3,3 +3,13 @@ body{padding-top:120px}pre{background:#f7f7f9}@media (min-width: 768px){body>.na
 .btn {
   margin-right: 10px;
 }
+
+.btn-home {
+  padding: 2.5px 10px;
+}
+
+.btn-action {
+  padding-top: 0px;
+  padding-bottom: 1px;
+  border-radius: 50%;
+}

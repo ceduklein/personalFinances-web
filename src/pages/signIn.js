@@ -23,18 +23,17 @@ class SignIn extends React.Component {
   componentDidMount() {
     const user = this.context.isAuthenticated;
     if(user) {
-      this.props.history.push('/home');
+      this.props.history.push('/dashboard');
     }
   }
 
-  login = async () => {
-
+  login = () => {
     this.userService.authenticate({
       email: this.state.email,
       pass: this.state.password
     }).then(response => {
       this.context.signIn(response.data);
-      this.props.history.push('/home');
+      this.props.history.push('/dashboard');
     }).catch(error => {
       alertError(error.response.data);
     });
@@ -44,7 +43,6 @@ class SignIn extends React.Component {
     this.props.history.push('/signup');
   }
 
-  
   render() {
     return(
       <div className="row">
@@ -66,7 +64,6 @@ class SignIn extends React.Component {
                           placeholder="Digite seu email"
                         />
                       </FormGroup>
-
                       <FormGroup htmlFor="exampleInputPassword" label="Senha: *">
                         <input 
                           type="password"
@@ -95,7 +92,6 @@ class SignIn extends React.Component {
     )
   }
 }
-
 SignIn.contextType = AuthContext;
 
 export default withRouter(SignIn);

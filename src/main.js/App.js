@@ -1,9 +1,9 @@
 import React from 'react';
 
-import 'bootswatch/dist/darkly/bootstrap.css';
+import 'bootswatch/dist/cerulean/bootstrap.css';
 import '../custom.css';
 import 'toastr/build/toastr.css';
-import 'primereact/resources/themes/luna-blue/theme.css';
+import 'primereact/resources/themes/saga-blue/theme.css';
 import 'primereact/resources/primereact.min.css';
 
 import AuthProvider from './AuthProvider';
