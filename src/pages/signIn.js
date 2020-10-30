@@ -11,7 +11,7 @@ import { alertError } from '../components/toastr';
 class SignIn extends React.Component {
 
   state = {
-    email: '',
+    username: '',
     password: ''
   }
 
@@ -29,13 +29,13 @@ class SignIn extends React.Component {
 
   login = () => {
     this.userService.authenticate({
-      email: this.state.email,
+      username: this.state.username,
       pass: this.state.password
     }).then(response => {
       this.context.signIn(response.data);
       this.props.history.push('/dashboard');
     }).catch(error => {
-      alertError(error.response.data);
+      alertError("E-mail e/ou senha incorretos.");
     });
   }
 
@@ -53,15 +53,13 @@ class SignIn extends React.Component {
                 <div className="col-lg-12">
                   <div className="bs-component">
                     <fieldset>
-                      <FormGroup htmlFor="exampleInputEmail" label="Email: *">
+                      <FormGroup htmlFor="exampleInputUserName" label="Nome de Usuário: *">
                         <input 
-                          type="email"
-                          value={this.state.email}
-                          onChange={e => this.setState({email: e.target.value})}
+                          value={this.state.username}
+                          onChange={e => this.setState({username: e.target.value})}
                           className="form-control"
-                          id="exampleInputEmail" 
-                          aria-describedby="emailHelp"
-                          placeholder="Digite seu email"
+                          id="exampleInputUserName" 
+                          placeholder="Informe seu nome de usuário"
                         />
                       </FormGroup>
                       <FormGroup htmlFor="exampleInputPassword" label="Senha: *">

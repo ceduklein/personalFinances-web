@@ -12,7 +12,6 @@ import { AuthContext } from './AuthProvider';
 function AuthRoute({ component: Component, isAuthenticated, ...props }) {
   return (
     <Route {...props} render={(componentProps) => {
-      // console.log(isAuthenticated)
       if(isAuthenticated) {
         return(
           <Component {...componentProps} />
@@ -35,21 +34,23 @@ class Routes extends React.Component {
           <Route path="/signup" component={SignUp} />
 
           <AuthRoute isAuthenticated={this.context.isAuthenticated}
-                     path="/dashboard" 
-                     component={Dashboard} />
-          <AuthRoute isAuthenticated={this.context.isAuthenticated} 
-                     path="/posting-list"
-                     component={PostingSearch} />
+            path="/"
+            component={Dashboard} />
           <AuthRoute isAuthenticated={this.context.isAuthenticated}
-                     path="/posting/:id?" 
-                     component={Posting} />
+            path="/dashboard" 
+            component={Dashboard} />
+          <AuthRoute isAuthenticated={this.context.isAuthenticated} 
+            path="/posting-list"
+            component={PostingSearch} />
+          <AuthRoute isAuthenticated={this.context.isAuthenticated}
+            path="/posting/:id?" 
+            component={Posting} />
 
         </Switch>
       </HashRouter>
     )
   }
 }
-
 Routes.contextType = AuthContext;
 
 export default Routes;

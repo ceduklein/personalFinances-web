@@ -1,9 +1,12 @@
-export const storageKey = '@MyFinances:user';
+import api from '../api/api'
+
+const storageKey = '@MyFinances:user';
 
 export default class AuthService {
   
   static signIn(user) {
     localStorage.setItem(storageKey, JSON.stringify(user));
+    api.defaults.headers.authorization = `Bearer ${user.token}`;
   }
 
   static signOut() {
@@ -18,6 +21,7 @@ export default class AuthService {
   static isAuthenticated() {
     const loggedUser = JSON.parse(localStorage.getItem(storageKey));
     if(loggedUser) {
+      api.defaults.headers.authorization = `Bearer ${loggedUser.token}`;
       return true
     } else {
       return false;

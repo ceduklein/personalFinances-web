@@ -1,25 +1,25 @@
 import React from 'react';
-import AuthService from '../services/authService';
+import StorageService from '../services/StorageService';
 
 export const AuthContext = React.createContext();
 
 const Provider = AuthContext.Provider;
 
-
 class AuthProvider extends React.Component {
 
   state = {
-    authenticatedUser: AuthService.getUser(),
-    isAuthenticated: AuthService.isAuthenticated()
+    authenticatedUser: StorageService.getUser(),
+    isAuthenticated: StorageService.isAuthenticated()
   }
 
   signIn = (user) => {
-    AuthService.signIn(user);
+    StorageService.signIn(user);
     this.setState({isAuthenticated: true, authenticatedUser: user});
+    
   }
 
   signOut = () => {
-    AuthService.signOut();
+    StorageService.signOut();
     this.setState({isAuthenticated: false, authenticatedUser: null});
   }
 

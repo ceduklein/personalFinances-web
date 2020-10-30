@@ -19,7 +19,6 @@ const date = new Date();
 class Dashboard extends React.Component {
 
   state = {
-    data: null,
     month: date.getMonth() + 1,
     year: date.getFullYear(),
     monthRender: date.getMonth() + 1,
@@ -36,8 +35,6 @@ class Dashboard extends React.Component {
     sumOutcomes: 0, // Soma das despesas pendentes e efetivadas
     userName: '',
     activeIndex: 0,
-    sumConfirmedIncomes: 0,
-    sumConfirmedOucomes: 0,
     currentBalance: 0,
   }
 
@@ -47,6 +44,7 @@ class Dashboard extends React.Component {
   }
 
   handleStateChange = (data, user) => {
+
     const incomes = [], outcomes = [];
     data.forEach(posting => {
       if(posting.type === 'RECEITA') {
@@ -90,7 +88,7 @@ class Dashboard extends React.Component {
         .reduce((acc, outcome) => acc +outcome.value, 0);
         accCanceledOutcomes.push(sumCanceledOut);
     }
-    this.setState({data, accConfirmedIncomes, accConfirmedOutcomes, userName: user.name});
+    this.setState({ accConfirmedIncomes, accConfirmedOutcomes, userName: user.name });
     
     if(this.state.month !== '') {
       const month = this.state.month - 1;
@@ -130,19 +128,20 @@ class Dashboard extends React.Component {
 
   async componentDidMount() {
     const loggedUser = this.context.authenticatedUser;
-    // Busca, na api, todos os lançamentos do usuário dentro do mês e ano atual.
     const response = await this.postingService.search({
       user: loggedUser.id,
-      year: date.getFullYear(),
+      year: this.state.year
     });
     this.handleStateChange(response.data, loggedUser);
   }
 
-
-  search = async() => {
+  search = async () => {
     const loggedUser = this.context.authenticatedUser;
-    
-    this.handleStateChange(this.state.data, loggedUser);
+    const response = await this.postingService.search({
+      user: loggedUser.id,
+      year: this.state.year
+    })
+    this.handleStateChange(response.data, loggedUser);
     this.setState({monthRender: this.state.month, yearRender: this.state.year});
   }
 

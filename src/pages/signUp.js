@@ -11,6 +11,7 @@ class SignUp extends React.Component {
 
   state = {
       name: "",
+      username: "",
       email: "",
       pass: "",
       passConfirmation: "",
@@ -24,6 +25,7 @@ class SignUp extends React.Component {
   register = () => {
     const user = {
       name: this.state.name,
+      username: this.state.username,
       email: this.state.email,
       pass: this.state.pass,
       passConfirmation: this.state.passConfirmation,
@@ -76,6 +78,16 @@ class SignUp extends React.Component {
                     className="form-control"
                     aria-describedby="emailHelp"
                     placeholder="Digite o email"
+                  />
+                </FormGroup>
+                <FormGroup htmlFor="inputUserName" label="Nome de usuário:">
+                  <input
+                    type="text"
+                    id="inputUserName"
+                    name="username"
+                    onChange={e => this.setState({username : e.target.value})}
+                    className="form-control"
+                    placeholder="Informe um nome de usuário"
                   />
                 </FormGroup>
                 <FormGroup htmlFor="inputPass1" label="Senha:">

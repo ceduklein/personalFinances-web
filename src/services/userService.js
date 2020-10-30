@@ -5,12 +5,12 @@ const apiUrl = '/api/users'
 
 export default class UserService {
 
-  authenticate(loginBody) {
-    return api.post(`${apiUrl}/auth`, loginBody)
+authenticate(loginBody) {
+    return api.post(`${apiUrl}/signin`, loginBody);
   }
 
   save(user) {
-    return api.post(`${apiUrl}`, user);
+    return api.post(`${apiUrl}/signup`, user);
   }
 
   validate(user) {
@@ -18,6 +18,10 @@ export default class UserService {
 
     if(!user.name) {
       errors.push('Por favor preencha o campo nome.');
+    }
+
+    if(!user.username) {
+      errors.push('Por favor informe um nome de usuário.')
     }
 
     if(!user.email || !user.email.match(/^[a-z0-9.]+@[a-z0-9]+\.[a-z]/)) {

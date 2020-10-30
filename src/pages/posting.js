@@ -28,8 +28,6 @@ class Posting extends React.Component {
     this.postingService = new PostingService();
   }
 
-  /** Verifica se existe id como parâmetro e, em caso positivo, busca o lançamento pelo id
-   na api e preenche os campos do formulário */
   componentDidMount() {
     const params = this.props.match.params;
     if(params.id) {
@@ -42,7 +40,6 @@ class Posting extends React.Component {
     }
   }
 
-  // Salva um novo lançamento.
   save = () => {
     const loggedUser = this.context.authenticatedUser;
     const { description, value, type, year, month } = this.state;
@@ -62,14 +59,23 @@ class Posting extends React.Component {
         alertSuccess('Lançamento cadastrado com sucesso.');
         this.props.history.push('/posting-list');
       }).catch(error => {
+        console.log(error);
         alertError(error.response.data);
       })
   }
 
-  // Atualiza o lançamento.
   update = () => {
     const { description, year, month, type, value, id, user, status } = this.state;
     const posting = { description, year, month, type, value, id, user, status };
+
+    try {
+      this.postingService.validate(posting);
+    } catch (error) {
+      const errors = error.msgs;
+
+      errors.forEach(msg => alertError(msg));
+      return false;
+    }
 
     this.postingService.update(posting)
       .then(response => {
