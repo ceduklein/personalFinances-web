@@ -23,7 +23,7 @@ class SignIn extends React.Component {
   componentDidMount() {
     const user = this.context.isAuthenticated;
     if(user) {
-      this.props.history.push('/dashboard');
+      this.props.history.push('/');
     }
   }
 
@@ -33,7 +33,7 @@ class SignIn extends React.Component {
       pass: this.state.password
     }).then(response => {
       this.context.signIn(response.data);
-      this.props.history.push('/dashboard');
+      this.props.history.push('/');
     }).catch(error => {
       alertError("E-mail e/ou senha incorretos.");
     });
