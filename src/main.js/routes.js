@@ -34,7 +34,7 @@ class Routes extends React.Component {
           <Route path="/signup" component={SignUp} />
 
           <AuthRoute isAuthenticated={this.context.isAuthenticated}
-            path="/" 
+            path="/" exact
             component={Dashboard} />
           <AuthRoute isAuthenticated={this.context.isAuthenticated} 
             path="/posting-list"
