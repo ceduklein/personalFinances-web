@@ -86,7 +86,7 @@ class PostingSearch extends React.Component {
         postings.splice(index, 1);
         
         this.setState({ postings: postings, showDeleteDialog: false});
-        alertSuccess('Lançamento deletado.');
+        alertSuccess('Lançamento excluído.');
       }).catch(error => {
         alertError('Erro ao tentar deletar o lançamento.');
       })

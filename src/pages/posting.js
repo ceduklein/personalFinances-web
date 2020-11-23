@@ -67,6 +67,7 @@ class Posting extends React.Component {
   update = () => {
     const { description, year, month, type, value, id, user, status } = this.state;
     const posting = { description, year, month, type, value, id, user, status };
+    posting.value = posting.value.replace(',', '.');
 
     try {
       this.postingService.validate(posting);
