@@ -44,6 +44,7 @@ class Posting extends React.Component {
     const loggedUser = this.context.authenticatedUser;
     const { description, value, type, year, month } = this.state;
     const posting = { user: loggedUser.id, description, value, type, year, month };
+    posting.value = posting.value.replace(',', '.');
 
     try {
       this.postingService.validate(posting);
@@ -59,7 +60,6 @@ class Posting extends React.Component {
         alertSuccess('Lançamento cadastrado com sucesso.');
         this.props.history.push('/posting-list');
       }).catch(error => {
-        console.log(error);
         alertError(error.response.data);
       })
   }

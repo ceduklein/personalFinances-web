@@ -95,7 +95,7 @@ export default class PostingService {
 
     if(!posting.value) {
       errors.push('Informe o valor.');
-    }
+    } 
 
     if(!posting.year) {
       errors.push('Informe o ano.');

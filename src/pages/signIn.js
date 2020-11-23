@@ -35,7 +35,7 @@ class SignIn extends React.Component {
       this.context.signIn(response.data);
       this.props.history.push('/');
     }).catch(error => {
-      alertError("E-mail e/ou senha incorretos.");
+      alertError("Nome de usuário e/ou senha incorretos.");
     });
   }
 
