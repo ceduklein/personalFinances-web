@@ -44,7 +44,7 @@ class Posting extends React.Component {
     const loggedUser = this.context.authenticatedUser;
     const { description, value, type, year, month } = this.state;
     const posting = { user: loggedUser.id, description, value, type, year, month };
-    posting.value = posting.value.replace(',', '.');
+    posting.value = posting.value.toString().replace(',', '.');
 
     try {
       this.postingService.validate(posting);
@@ -67,7 +67,7 @@ class Posting extends React.Component {
   update = () => {
     const { description, year, month, type, value, id, user, status } = this.state;
     const posting = { description, year, month, type, value, id, user, status };
-    posting.value = posting.value.replace(',', '.');
+    posting.value = posting.value.toString().replace(',', '.');
 
     try {
       this.postingService.validate(posting);
