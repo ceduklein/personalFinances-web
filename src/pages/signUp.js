@@ -44,7 +44,7 @@ class SignUp extends React.Component {
         alertSuccess('Usuário cadastrado com sucesso. Efetue o login para acessar a aplicação.')
         this.props.history.push('/signin');
       }).catch(error => {
-        alertError(error.response.data);
+        alertError(error.response.data.message);
       });
   }
 

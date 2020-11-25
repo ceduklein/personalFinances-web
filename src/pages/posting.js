@@ -60,7 +60,7 @@ class Posting extends React.Component {
         alertSuccess('Lançamento cadastrado com sucesso.');
         this.props.history.push('/posting-list');
       }).catch(error => {
-        alertError(error.response.data);
+        alertError(error.response.data.message);
       })
   }
 
@@ -83,7 +83,7 @@ class Posting extends React.Component {
         this.props.history.push('/posting-list');
         alertSuccess('Lançamento atualizado com sucesso.')
       }).catch(error => {
-        alertError(error.response.data);
+        alertError(error.response.data.message);
       })
   }
   

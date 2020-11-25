@@ -106,7 +106,7 @@ class PostingSearch extends React.Component {
           alertSuccess('Status atualizado.');
         }
       }).catch(error =>{
-        alertError('Ocorreu um erro ao tentar atualizado o status do lançamento.')
+        alertError('Ocorreu um erro ao tentar atualizar o status do lançamento.')
       });
   }
 
